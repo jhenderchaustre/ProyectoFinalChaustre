@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
     const articulosStore = document.getElementById("articulos");
     const verCarrito = document.getElementById("carrito");
@@ -41,31 +42,74 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const response = await fetch("./javascript/data.json");
             const data = await response.json();
-
+            console.log("Productos cargados:", data);
             displayProductos(data);
         } catch (error) {
             console.error("Error al cargar data.json:", error);
         }
     };
 
-    const storedCarrito = localStorage.getItem("carrito");
-    if (storedCarrito) {
-        carrito = JSON.parse(storedCarrito);
-    }
-
     verCarrito.addEventListener("click", () => {
         console.log("Haciendo clic en Ver Carrito");
         modalContainer.innerHTML = "";
         modalContainer.style.display = "flex";
-        console.log("Carrito actual:", carrito);
-        console.log("Mostrando el modal");
+        const modalHeader = document.createElement("div");
+        modalHeader.className = "modalH";
+        modalHeader.innerHTML = `
+        <h2 class="modalTitulo">Carrito</h2>
+        `;
+        modalContainer.append(modalHeader);
+        const modalButton = document.createElement("h3");
+        modalButton.innerText = "x";
+        modalButton.className = "modalHbutton";
+        modalButton.addEventListener("click", () => {
+            modalContainer.style.display = "none";
+        });
+
+        modalHeader.append(modalButton);
+
+        carrito.forEach((product, index) => {
+            let carritoContent = document.createElement("div");
+            carritoContent.className = "modalContent"
+            carritoContent.innerHTML = `
+            <img src=${product.img}>
+            <h3>${product.nombre}</h3>
+            <p>${product.precio} $</p>
+            <span class="eliminar" data-index="${index}">X</span>
+            `;
+            modalContainer.append(carritoContent);
+        });
+
+        const total = carrito.reduce((acc, el) => acc + parseFloat(el.precio), 0);
+
+        const totalApagar = document.createElement("div");
+        totalApagar.className = "totalContent";
+        totalApagar.innerHTML = `Total a pagar: ${total} $`
+        modalContainer.append(totalApagar);
+
+    
+        const eliminarBotones = document.querySelectorAll(".eliminar");
+        eliminarBotones.forEach((eliminarBoton) => {
+            eliminarBoton.addEventListener("click", (e) => {
+                const index = e.target.getAttribute("data-index");
+                if (index !== null) {
+                    carrito.splice(index, 1);
+                    updateLocalStorage();
+                    verCarrito.click();
+                }
+            });
+        });
     });
 
-    const updateLocalStorage = () => {
-        console.log("Actualizando localStorage con carrito:", carrito);
-        localStorage.setItem("carrito", JSON.stringify(carrito));
-    };
-    
 
+    function updateLocalStorage() {
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+    }
+
+
+    const storedCarrito = localStorage.getItem("carrito");
+    if (storedCarrito) {
+        carrito = JSON.parse(storedCarrito);
+    }
     getProducts();
 });
