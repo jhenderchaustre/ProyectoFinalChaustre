@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
             content.append(comprar);
 
             comprar.addEventListener("click", () => {
+                console.log("Haciendo clic en Comprar");
                 carrito.push({
                     id: product.id,
                     img: product.img,
@@ -53,14 +54,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     verCarrito.addEventListener("click", () => {
+        console.log("Haciendo clic en Ver Carrito");
         modalContainer.innerHTML = "";
         modalContainer.style.display = "flex";
-        // ... Código actual para mostrar el carrito en el modal
+        console.log("Carrito actual:", carrito);
+        console.log("Mostrando el modal");
     });
 
     const updateLocalStorage = () => {
+        console.log("Actualizando localStorage con carrito:", carrito);
         localStorage.setItem("carrito", JSON.stringify(carrito));
     };
+    
 
     getProducts();
 });

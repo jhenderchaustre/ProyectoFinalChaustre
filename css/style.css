@@ -74,7 +74,7 @@ h1{
 .card button:hover{
     opacity: 0.7;
 }
-.modalS{
+.modalS {
     width: 80%;
     margin: 0 10%;
     max-height: 88vh;
@@ -88,7 +88,10 @@ h1{
     z-index: 9;
     top: 12vh;
     scrollbar-color: none;
+    opacity: 1;
+    visibility: visible;
 }
+
 .modalS::-webkit-scrollbar{
     display: none;
 }
