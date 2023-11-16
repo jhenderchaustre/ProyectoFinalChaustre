@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
     const articulosStore = document.getElementById("articulos");
     const verCarrito = document.getElementById("carrito");
@@ -32,7 +31,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     nombre: product.nombre,
                     precio: product.precio
                 });
-                console.log(carrito);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Producto añadido al carrito',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
                 updateLocalStorage();
             });
         });
@@ -56,9 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const modalHeader = document.createElement("div");
         modalHeader.className = "modalH";
         modalHeader.innerHTML = `
-        <h2 class="modalTitulo">Carrito</h2>
+            <h2 class="modalTitulo">Carrito</h2>
         `;
-        modalContainer.append(modalHeader);
+        
         const modalButton = document.createElement("h3");
         modalButton.innerText = "x";
         modalButton.className = "modalHbutton";
@@ -67,15 +71,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         modalHeader.append(modalButton);
+        modalContainer.append(modalHeader);
 
         carrito.forEach((product, index) => {
             let carritoContent = document.createElement("div");
             carritoContent.className = "modalContent"
             carritoContent.innerHTML = `
-            <img src=${product.img}>
-            <h3>${product.nombre}</h3>
-            <p>${product.precio} $</p>
-            <span class="eliminar" data-index="${index}">X</span>
+                <img src=${product.img}>
+                <h3>${product.nombre}</h3>
+                <p>${product.precio} $</p>
+                <span class="eliminar" data-index="${index}">X</span>
             `;
             modalContainer.append(carritoContent);
         });
@@ -87,7 +92,24 @@ document.addEventListener("DOMContentLoaded", () => {
         totalApagar.innerHTML = `Total a pagar: ${total} $`
         modalContainer.append(totalApagar);
 
-    
+        const finalizarCompraButton = document.createElement("button");
+        finalizarCompraButton.innerText = "Finalizar Compra";
+        finalizarCompraButton.id = "finalizarCompraButton";
+        finalizarCompraButton.addEventListener("click", () => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Compra realizada con éxito',
+                text: `Total a pagar: ${total} $`,
+                confirmButtonText: 'Aceptar'
+            }).then(() => {
+                carrito = [];
+                updateLocalStorage();
+                modalContainer.style.display = "none";
+            });
+        });
+
+        modalContainer.append(finalizarCompraButton);
+
         const eliminarBotones = document.querySelectorAll(".eliminar");
         eliminarBotones.forEach((eliminarBoton) => {
             eliminarBoton.addEventListener("click", (e) => {

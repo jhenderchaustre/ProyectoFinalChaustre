@@ -90,6 +90,7 @@ h1{
     scrollbar-color: none;
     opacity: 1;
     visibility: visible;
+    border-radius: 15px;
 }
 
 .modalS::-webkit-scrollbar{
@@ -139,4 +140,15 @@ footer{
     text-align: center;
     margin-top: 1rem;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+#finalizarCompraButton{
+    margin-bottom: 20px;
+    width: 140px;
+    height: 30px;
+    background-color: red;
+    border-color: white;
+    border-radius: 5px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: white;
+    font-size: 1rem;
 }
